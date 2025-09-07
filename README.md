@@ -93,6 +93,29 @@ flowchart TD
 
 ---
 
+## 🎨 Interface do Sistema
+
+### 📌 Lista de Produtos
+
+![Lista de Produtos](https://github.com/user-attachments/assets/7a19ff29-3762-4c8b-b3e0-327f8c5ea9ff)
+Tela onde o usuário pode visualizar todos os produtos cadastrados, com opção de **editar**, **excluir**, aplicar **filtros** por nome, categoria, preço e estoque.
+
+---
+
+### 📌 Cadastro de Produtos
+
+![Cadastro de Produtos](https://github.com/user-attachments/assets/eae27385-8440-4e18-bce0-134899d3a677)  
+Tela para cadastrar novos produtos no sistema, com campos obrigatórios como **nome, preço, categoria, estoque e data de entrada**.
+
+---
+
+### 📌 Dashboard
+
+![Dashboard](https://github.com/user-attachments/assets/7cdd273e-77ed-4043-bd27-d209873e45e5)  
+Tela com visão geral do sistema, mostrando indicadores como **total de produtos, quantidade em estoque e valor total do inventário**.
+
+---
+
 ## ⚙️ Tecnologias e Dependências
 
 ### **Backend**
@@ -166,6 +189,3 @@ mvn spring-boot:run
 💻 Desenvolvedor Fullstack em formação | Java • Spring Boot • React • SwiftUI
 
 ---
-
-```
-
