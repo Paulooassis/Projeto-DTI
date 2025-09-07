@@ -93,7 +93,7 @@ CREATE TABLE produto (
 ### 2️⃣ Clonar o Repositório
 
 ```bash
-git clone https://github.com/seu-usuario/mini-ecommerce.git
+[https://github.com/Paulooassis/Projeto-DTI.git]
 cd mini-ecommerce
 ```
 
@@ -111,7 +111,7 @@ mvn spring-boot:run
 
 ### 5️⃣ Acessar
 
-* API: `http://localhost:8080/produtos`
+* API: `http://localhost:8080/api/produtos`
 * Frontend: abrir `index.html` na pasta do frontend.
 
 ---
