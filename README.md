@@ -58,6 +58,41 @@ CREATE TABLE produto (
 
 ---
 
+## 🏗️ Arquitetura do Projeto
+
+O projeto segue uma arquitetura em camadas organizada em pacotes:
+
+* **`entity`** → Contém as entidades do sistema, que representam as tabelas do banco de dados (ex.: `Produto`).
+* **`config`** → Armazena configurações globais do Spring Boot, banco de dados e outros beans que precisam ser gerenciados.
+* **`controller`** → Contém os controladores REST (`ProdutoController`) responsáveis por receber as requisições HTTP e devolver respostas para o cliente.
+* **`dto`** → Define os *Data Transfer Objects*, usados para transferir dados entre camadas (ex.: `ProdutoDTO`, `CriarProdutoDTO`, `AtualizarProdutoDTO`).
+* **`enum`** → Enumerações que representam constantes, como a `Categoria` de um produto.
+* **`exception`** → Tratamento de exceções personalizadas, garantindo respostas claras e padronizadas em caso de erro.
+* **`repository`** → Interfaces que herdam de `JpaRepository`, responsáveis por acessar e manipular o banco de dados (ex.: `ProdutoRepository`).
+* **`service`** → Contém as regras de negócio e integra as camadas de controller e repository (ex.: `ProdutoService` e sua implementação).
+
+Essa separação garante **organização, manutenibilidade e escalabilidade** do sistema.
+
+---
+
+## 🔎 Diagrama da Arquitetura
+
+```mermaid
+flowchart TD
+    A[Frontend<br>HTML • CSS • JS] -->|Requisições HTTP| B[Controller]
+    B -->|Envia DTO| C[Service]
+    C -->|Chama| D[Repository]
+    D -->|Acessa| E[(Banco de Dados SQLite)]
+
+    C -->|Usa| F[DTO]
+    B -->|Retorna JSON| A
+    D -->|Mapeia| G[Entity]
+    C -->|Validações & Regras| H[Exception Handler]
+    G -->|Categoria| I[Enum]
+```
+
+---
+
 ## ⚙️ Tecnologias e Dependências
 
 ### **Backend**
@@ -93,7 +128,7 @@ CREATE TABLE produto (
 ### 2️⃣ Clonar o Repositório
 
 ```bash
-[https://github.com/Paulooassis/Projeto-DTI.git]
+git clone https://github.com/Paulooassis/Projeto-DTI.git
 cd mini-ecommerce
 ```
 
