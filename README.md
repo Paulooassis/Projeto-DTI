@@ -1,159 +1,136 @@
+# 🛒 Mini E-commerce - Sistema de Gerenciamento de Produtos
 
-# 🚁 Sistema de Entregas por Drones (Spring Boot)
+## 📖 Descrição
+Este projeto é um **mini e-commerce** desenvolvido em **Java 21** com **Spring Boot**, integrando **SQLite** como banco de dados e um **frontend simples em HTML, CSS e JavaScript**.  
 
-Este é um sistema de simulação de entregas por drones em ambientes urbanos, desenvolvido com **Spring Boot** para o desafio técnico da **dti digital**.
+O objetivo é permitir o gerenciamento de produtos com operações **CRUD completas**, além de cálculos úteis sobre estoque e valor total armazenado.
 
 ---
 
-## ✅ Como executar o projeto
+## 📦 Recurso: Produto
+Cada produto é armazenado no banco de dados com os seguintes atributos:
 
-### Pré-requisitos
-- Java 17+
-- Maven 3.8+
-- IDE (recomendado: IntelliJ ou VSCode)
+| Campo         | Tipo         | Obrigatório | Descrição |
+|---------------|-------------|-------------|-----------|
+| `id`          | Long (PK)   | Sim | Identificador único |
+| `nome`        | String (100) | Sim | Nome do produto |
+| `preco`       | Double      | Sim | Preço do produto (maior que zero) |
+| `categoria`   | Enum        | Sim | Categoria (ex.: ROUPA, ELETRONICO, ALIMENTO) |
+| `estoque`     | Integer     | Sim | Quantidade em estoque (≥ 0) |
+| `dataEntrada` | LocalDate   | Sim | Data de entrada no estoque |
+| `descricao`   | String (500)| Não | Descrição opcional |
+| `imagemUrl`   | String (255)| Não | URL da imagem do produto |
 
-### Passos
+---
 
-1. Clone o repositório:
+## ⚙️ Funcionalidades
+A aplicação implementa um **serviço de produtos** com as seguintes operações:
+
+- `listarTodos()` → Lista todos os produtos.
+- `buscarPorId(Long id)` → Busca produto pelo ID.
+- `buscarPorCategoria(Categoria categoria)` → Busca produtos filtrando pela categoria.
+- `buscarPorNome(String nome)` → Busca produtos pelo nome exato.
+- `buscarPorTermo(String termo)` → Busca produtos contendo um termo no nome ou descrição.
+- `criar(CriarProdutoDTO produtoDTO)` → Cria um novo produto.
+- `atualizar(Long id, AtualizarProdutoDTO produtoDTO)` → Atualiza os dados de um produto existente.
+- `excluir(Long id)` → Remove um produto do banco.
+- `contarTotalProdutos()` → Retorna a quantidade total de produtos cadastrados.
+- `contarTotalEstoque()` → Retorna o estoque total (somatória de quantidades).
+- `calcularValorTotalEstoque()` → Calcula o valor total do estoque (quantidade × preço).
+
+---
+
+## 🗄️ Banco de Dados
+
+### Script SQL (SQLite)
+```sql
+CREATE TABLE produto (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    preco DOUBLE NOT NULL CHECK (preco > 0),
+    categoria VARCHAR(20) NOT NULL,
+    estoque INTEGER NOT NULL CHECK (estoque >= 0),
+    data_entrada DATE NOT NULL,
+    descricao VARCHAR(500),
+    imagem_url VARCHAR(255)
+);
+````
+
+---
+
+## ⚙️ Tecnologias e Dependências
+
+### **Backend**
+
+* **Java 21** → Linguagem principal.
+* **Spring Boot 3.2.4**
+
+  * `spring-boot-starter-web` → Suporte a APIs REST e servidor embutido (Tomcat).
+  * `spring-boot-starter-data-jpa` → Integração com JPA/Hibernate para persistência no banco.
+  * `spring-boot-starter-validation` → Validações automáticas via anotações (`@NotBlank`, `@Min`, etc.).
+* **Lombok** → Reduz boilerplate (getters, setters, builders).
+* **SQLite JDBC (`org.xerial`)** → Driver para conexão com SQLite.
+* **Hibernate Community Dialects** → Suporte a dialetos SQL, incluindo SQLite.
+
+### **Frontend**
+
+* **HTML5, CSS3 e JavaScript** → Interface simples para interação com o sistema.
+
+### **Testes**
+
+* `spring-boot-starter-test` → Frameworks de teste (JUnit, Mockito, etc.).
+
+---
+
+## 🚀 Como Executar o Projeto
+
+### 1️⃣ Pré-requisitos
+
+* Java 21 instalado
+* Maven configurado
+* SQLite instalado (ou usar JDBC embutido)
+
+### 2️⃣ Clonar o Repositório
 
 ```bash
-git clone https://github.com/seuusuario/seurepositorio.git
-cd seurepositorio
+git clone https://github.com/seu-usuario/mini-ecommerce.git
+cd mini-ecommerce
 ```
 
-2. Execute com Maven:
+### 3️⃣ Instalar Dependências
 
 ```bash
-./mvnw spring-boot:run
+mvn clean install
 ```
 
-3. Acesse a aplicação:
+### 4️⃣ Executar a Aplicação
 
-```
-http://localhost:8080
+```bash
+mvn spring-boot:run
 ```
 
-4. Console do banco H2 (opcional):
+### 5️⃣ Acessar
 
-```
-http://localhost:8080/h2-console
-JDBC URL: jdbc:h2:mem:testdb
-```
+* API: `http://localhost:8080/produtos`
+* Frontend: abrir `index.html` na pasta do frontend.
 
 ---
 
-## 🧱 Arquitetura do Projeto
+## ✅ Diferenciais
 
-O sistema está estruturado em camadas:
+* 🔍 Busca avançada por **nome** e **termo parcial**
+* 📊 Funções de **contagem e cálculo de valor de estoque**
+* 🧪 Testes automatizados com Spring Boot Test (JUnit/Mockito)
+* 🐳 Possibilidade de conteinerização com **Docker**
+
+---
+
+## 👨‍💻 Autor
+
+**Paulo Henrique Fonseca de Assis**
+💻 Desenvolvedor Fullstack em formação | Java • Spring Boot • React • SwiftUI
+
+---
 
 ```
-📦 com.dti.demo
-├── 📁 controller         -> Camada REST, endpoints HTTP
-├── 📁 service            -> Lógica de negócio central
-├── 📁 repository         -> Integração com banco (Spring Data JPA)
-├── 📁 entity             -> Entidades JPA persistidas
-├── 📁 dto                -> Data Transfer Objects (entrada/saída)
-├── 📁 enums              -> Enumerações de domínio
-└── 📁 exception          -> (Tratamento básico direto nos services)
-```
 
-Todos os dados são armazenados em um **banco H2 em memória**, simulando persistência real durante a execução da aplicação.
-
----
-
-## 🚀 Funcionalidades implementadas
-
-### 📦 Entregas
-- Alocação de pedidos em drones disponíveis
-- Priorização automática com base em peso, distância e prioridade
-- Redução da bateria conforme distância
-- Cálculo de tempo total de entrega
-- Mudança automática de estado do drone (`IDLE`, `EM_VOO`, `ENTREGANDO`, `RETORNANDO`)
-
-### 🗺️ Zonas de Exclusão Aérea
-- Cadastro de áreas de exclusão (coordenadas + raio)
-- Verificação automática ao alocar pedidos
-- Endpoint para verificar coordenadas manualmente
-
-### 📊 Relatórios
-- Quantidade total de entregas
-- Tempo médio por entrega
-- Drone mais eficiente
-- Mapa ASCII simplificado das entregas
-
----
-
-## 🧪 Testes automatizados
-
-Utilizamos o `SpringBootTest` para validar os principais fluxos do sistema:
-
-- Criação de drone
-- Adição de zona de exclusão
-- Alocação de pedidos em entrega
-- Geração de relatórios
-
-Arquivo de testes:  
-`src/test/java/com/dti/demo/DtiApplicationTests.java`
-
----
-
-## 📥 Exemplo de entrada/saída - DTOs
-
-### 🔹 Criar drone (POST /drones)
-
-**Entrada:**
-```json
-{
-  "pesoSuportado": 10.0,
-  "distanciaSuportada": 100.0,
-  "bateria": 100,
-  "disponivel": true,
-  "estado": "IDLE"
-}
-```
-
-**Saída:**
-```json
-{
-  "id": 1,
-  "pesoSuportado": 10.0,
-  "distanciaSuportada": 100.0,
-  "bateria": 100,
-  "disponivel": true,
-  "estado": "IDLE"
-}
-```
-
-### 🔹 Gerar relatório (GET /relatorio)
-
-**Saída:**
-```json
-{
-  "totalEntregas": 5,
-  "tempoMedioEntrega": 8.5,
-  "droneMaisEficiente": "Drone ID 2 (distância 160.0 km)",
-  "mapaEntregas": "📦📦⬜⬜⬜📦"
-}
-```
-
----
-
-## 🧠 Diferenciais do Projeto
-
-- ✅ Arquitetura em camadas clara e separada
-- ✅ Uso de DTOs em todas as comunicações entre camadas
-- ✅ Validações simples sem frameworks adicionais
-- ✅ Simulação realista com cálculo de tempo, distância e bateria
-- ✅ Testes de integração cobrindo as principais regras
-- ✅ Visualização de mapa ASCII
-- ✅ Tratamento de zonas de exclusão aérea
-- ✅ Endpoint para simulação e relatório final completo
-
----
-
-## 💬 Autor
-
-**Paulo Henrique Fonseca de Assis**  
-Desenvolvedor Java • Spring Boot • SQL • REST APIs
-
----
