@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini E-commerce - Sistema de Produtos</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <i class="fas fa-store"></i>
+        <span>Mini E-commerce CRUD</span>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#" class="active" id="nav-dashboard"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+          <li><a href="#" id="nav-cadastrar"><i class="fas fa-plus-circle"></i> Cadastrar</a></li>
+          <li><a href="#" id="nav-listar"><i class="fas fa-list"></i> Listar Produtos</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Dashboard View -->
+    <div id="dashboard-view">
+      <h1>Dashboard do Sistema</h1>
+      
+      <div class="dashboard">
+        <div class="dashboard-card">
+          <h3>Total de Produtos</h3>
+          <div class="number" id="total-produtos">0</div>
+        </div>
+        <div class="dashboard-card">
+          <h3>Produtos em Estoque</h3>
+          <div class="number" id="total-estoque">0</div>
+        </div>
+        <div class="dashboard-card">
+          <h3>Valor Total</h3>
+          <div class="number" id="valor-total">R$ 0,00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form View -->
+    <div id="form-view" style="display: none;">
+      <h1>Cadastro de Produtos</h1>
+
+      <div class="form-container">
+        <div class="form-header">
+          <i class="fas fa-plus-circle"></i> Novo Produto
+        </div>
+        <input type="hidden" id="produto-id">
+        <div class="form-group">
+          <label for="nome">Nome do Produto *</label>
+          <input type="text" id="nome" placeholder="Nome do produto" required>
+        </div>
+        <div class="form-group">
+          <label for="preco">Preço (R$) *</label>
+          <input type="number" id="preco" placeholder="Preço" step="0.01" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="categoria">Categoria *</label>
+          <select id="categoria" required>
+            <option value="">Selecione uma categoria</option>
+            <option value="ELETRONICOS">Eletrônicos</option>
+            <option value="LIVROS">Livros</option>
+            <option value="ROUPAS">Roupas</option>
+            <option value="ESPORTES">Esportes</option>
+            <option value="CASA">Casa e Cozinha</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="estoque">Estoque *</label>
+          <input type="number" id="estoque" placeholder="Quantidade em estoque" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="data">Data de Entrada *</label>
+          <input type="date" id="data" required>
+        </div>
+        <div class="form-group">
+          <label for="descricao">Descrição</label>
+          <textarea id="descricao" placeholder="Descrição do produto" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="imagemUrl">URL da Imagem</label>
+          <input type="text" id="imagemUrl" placeholder="URL da imagem">
+        </div>
+        <button onclick="salvarProduto()" id="btn-salvar">
+          <i class="fas fa-save"></i> Salvar Produto
+        </button>
+      </div>
+    </div>
+
+    <!-- List View -->
+    <div id="list-view" style="display: none;">
+      <div class="page-header">
+        <h1><i class="fas fa-list"></i> Lista de Produtos</h1>
+        <p>Gerencie todos os produtos do seu catálogo</p>
+      </div>
+
+      <div class="products-layout">
+        <!-- Filtros à direita -->
+        <aside class="filters-sidebar">
+          <div class="filters-container">
+            <div class="filters-header">
+              <h3><i class="fas fa-filter"></i> Filtros</h3>
+              <button class="btn-clear" onclick="limparFiltros()">
+                <i class="fas fa-times"></i> Limpar
+              </button>
+            </div>
+
+            <div class="filter-group">
+              <label for="search-input"><i class="fas fa-search"></i> Buscar</label>
+              <input type="text" id="search-input" placeholder="Nome ou descrição..." oninput="aplicarFiltros()">
+            </div>
+
+            <div class="filter-group">
+              <label for="filter-categoria"><i class="fas fa-tag"></i> Categoria</label>
+              <select id="filter-categoria" onchange="aplicarFiltros()">
+                <option value="">Todas as categorias</option>
+                <option value="ELETRONICOS">Eletrônicos</option>
+                <option value="LIVROS">Livros</option>
+                <option value="ROUPAS">Roupas</option>
+                <option value="ESPORTES">Esportes</option>
+                <option value="CASA">Casa e Cozinha</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filter-estoque"><i class="fas fa-boxes"></i> Estoque</label>
+              <select id="filter-estoque" onchange="aplicarFiltros()">
+                <option value="">Todos</option>
+                <option value="com-estoque">Com estoque</option>
+                <option value="sem-estoque">Sem estoque</option>
+                <option value="estoque-baixo">Estoque baixo (< 10)</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filter-preco"><i class="fas fa-dollar-sign"></i> Faixa de Preço</label>
+              <select id="filter-preco" onchange="aplicarFiltros()">
+                <option value="">Todos os preços</option>
+                <option value="0-50">Até R$ 50</option>
+                <option value="50-100">R$ 50 - R$ 100</option>
+                <option value="100-500">R$ 100 - R$ 500</option>
+                <option value="500+">Acima de R$ 500</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filter-ordem"><i class="fas fa-sort"></i> Ordenar por</label>
+              <select id="filter-ordem" onchange="aplicarFiltros()">
+                <option value="nome">Nome (A-Z)</option>
+                <option value="nome-desc">Nome (Z-A)</option>
+                <option value="preco">Preço (Menor-Maior)</option>
+                <option value="preco-desc">Preço (Maior-Menor)</option>
+                <option value="data-recente">Data (Mais recente)</option>
+                <option value="data-antiga">Data (Mais antiga)</option>
+              </select>
+            </div>
+
+            <div class="filter-stats">
+              <div id="contador-produtos">Mostrando 0 de 0 produtos</div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Produtos à esquerda -->
+        <section class="products-main">
+          <div class="products-actions">
+            <button class="btn-primary" onclick="showView('form')">
+              <i class="fas fa-plus"></i> Novo Produto
+            </button>
+          </div>
+
+          <div class="card-container" id="listaProdutos">
+            <div class="empty-state">
+              <i class="fas fa-spinner loading"></i>
+              <h2>Carregando produtos...</h2>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
