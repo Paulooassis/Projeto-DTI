@@ -182,3 +182,53 @@ mvn spring-boot:run
 * 🐳 Possibilidade de conteinerização com **Docker**
 
 
+## 📝 Logs e Testes Unitários na Controller
+
+A classe **`ProdutoController`** é responsável por receber as requisições HTTP da API e interagir com a camada de serviço. Para garantir **rastreamento e confiabilidade**, foram adicionados **logs** em cada operação:
+
+* **INFO** → usado para registrar ações principais (ex.: criação, busca, exclusão de produtos).
+* **ERROR** → utilizado para capturar e descrever erros ocorridos durante as requisições.
+
+Exemplo de log no método de criação:
+
+```java
+logger.info("POST /api/produtos - Criando novo produto: {}", produtoDTO.getNome());
+logger.error("POST /api/produtos - Erro ao criar produto: {}", e.getMessage(), e);
+```
+
+Isso facilita a **auditoria** das requisições e o **debug** em caso de falhas, armazenando mensagens em console ou arquivo de log configurado no `application.properties`.
+
+Além disso, a aplicação conta com **testes unitários (JUnit + Mockito)** que validam tanto os fluxos de sucesso quanto de erro dos serviços.
+Esses testes garantem que as regras de negócio funcionam corretamente e que exceções, como *produto não encontrado*, são tratadas de forma adequada.
+
+✅ **Benefícios**:
+
+* Rastreabilidade de operações da API.
+* Facilidade na detecção de erros em produção.
+* Confiança no código por meio de testes automatizados.
+
+
+## 🧪 Testes Unitários (`ProdutoServiceImplTest`)
+
+O projeto conta com **testes unitários** implementados em **JUnit 5** com **Mockito**, garantindo que as regras de negócio da camada de serviço funcionem corretamente.
+
+Os testes verificam tanto os **fluxos de sucesso** quanto os **cenários de erro**, assegurando a confiabilidade do sistema.
+
+### 🔹 Cenários Cobertos
+
+* **Listagem de produtos** → valida se retorna todos os itens cadastrados.
+* **Busca por ID e categoria** → garante o retorno correto e lança exceção quando o produto não existe.
+* **Busca por nome e termo** → verifica consultas parciais e case-insensitive.
+* **Criação de produto** → assegura que os dados são persistidos corretamente no repositório.
+* **Atualização** → confirma a modificação dos atributos e lança exceção se o produto não for encontrado.
+* **Exclusão** → valida se o produto é removido quando existe e se uma exceção é lançada caso não exista.
+* **Métricas de estoque** → testa os métodos de contagem de produtos, soma total do estoque e cálculo do valor total armazenado.
+* **Conversão para DTO** → garante que os objetos são convertidos corretamente para transferência de dados.
+
+### ✅ Benefícios
+
+* Aumenta a **confiabilidade** do sistema.
+* Garante que **erros sejam capturados antecipadamente**.
+* Facilita **manutenções futuras**, evitando regressões.
+* Melhora a **cobertura de testes** em cenários reais de uso.
+
