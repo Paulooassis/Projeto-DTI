@@ -58,6 +58,64 @@ CREATE TABLE produto (
 
 ---
 
+## 🏗️ Arquitetura do Projeto
+
+O projeto segue uma arquitetura em camadas organizada em pacotes:
+
+* **`entity`** → Contém as entidades do sistema, que representam as tabelas do banco de dados (ex.: `Produto`).
+* **`config`** → Armazena configurações globais do Spring Boot, banco de dados e outros beans que precisam ser gerenciados.
+* **`controller`** → Contém os controladores REST (`ProdutoController`) responsáveis por receber as requisições HTTP e devolver respostas para o cliente.
+* **`dto`** → Define os *Data Transfer Objects*, usados para transferir dados entre camadas (ex.: `ProdutoDTO`, `CriarProdutoDTO`, `AtualizarProdutoDTO`).
+* **`enum`** → Enumerações que representam constantes, como a `Categoria` de um produto.
+* **`exception`** → Tratamento de exceções personalizadas, garantindo respostas claras e padronizadas em caso de erro.
+* **`repository`** → Interfaces que herdam de `JpaRepository`, responsáveis por acessar e manipular o banco de dados (ex.: `ProdutoRepository`).
+* **`service`** → Contém as regras de negócio e integra as camadas de controller e repository (ex.: `ProdutoService` e sua implementação).
+
+Essa separação garante **organização, manutenibilidade e escalabilidade** do sistema.
+
+---
+
+## 🔎 Diagrama da Arquitetura
+
+```mermaid
+flowchart TD
+    A[Frontend<br>HTML • CSS • JS] -->|Requisições HTTP| B[Controller]
+    B -->|Envia DTO| C[Service]
+    C -->|Chama| D[Repository]
+    D -->|Acessa| E[(Banco de Dados SQLite)]
+
+    C -->|Usa| F[DTO]
+    B -->|Retorna JSON| A
+    D -->|Mapeia| G[Entity]
+    C -->|Validações & Regras| H[Exception Handler]
+    G -->|Categoria| I[Enum]
+```
+
+---
+
+## 🎨 Interface do Sistema
+
+### 📌 Lista de Produtos
+
+![Lista de Produtos](https://github.com/user-attachments/assets/7a19ff29-3762-4c8b-b3e0-327f8c5ea9ff)
+Tela onde o usuário pode visualizar todos os produtos cadastrados, com opção de **editar**, **excluir**, aplicar **filtros** por nome, categoria, preço e estoque.
+
+---
+
+### 📌 Cadastro de Produtos
+
+![Cadastro de Produtos](https://github.com/user-attachments/assets/eae27385-8440-4e18-bce0-134899d3a677)  
+Tela para cadastrar novos produtos no sistema, com campos obrigatórios como **nome, preço, categoria, estoque e data de entrada**.
+
+---
+
+### 📌 Dashboard
+
+![Dashboard](https://github.com/user-attachments/assets/7cdd273e-77ed-4043-bd27-d209873e45e5)  
+Tela com visão geral do sistema, mostrando indicadores como **total de produtos, quantidade em estoque e valor total do inventário**.
+
+---
+
 ## ⚙️ Tecnologias e Dependências
 
 ### **Backend**
@@ -93,7 +151,7 @@ CREATE TABLE produto (
 ### 2️⃣ Clonar o Repositório
 
 ```bash
-[https://github.com/Paulooassis/Projeto-DTI.git]
+git clone https://github.com/Paulooassis/Projeto-DTI.git
 cd mini-ecommerce
 ```
 
@@ -123,14 +181,54 @@ mvn spring-boot:run
 * 🧪 Testes automatizados com Spring Boot Test (JUnit/Mockito)
 * 🐳 Possibilidade de conteinerização com **Docker**
 
----
 
-## 👨‍💻 Autor
+## 📝 Logs e Testes Unitários na Controller
 
-**Paulo Henrique Fonseca de Assis**
-💻 Desenvolvedor Fullstack em formação | Java • Spring Boot • React • SwiftUI
+A classe **`ProdutoController`** é responsável por receber as requisições HTTP da API e interagir com a camada de serviço. Para garantir **rastreamento e confiabilidade**, foram adicionados **logs** em cada operação:
 
----
+* **INFO** → usado para registrar ações principais (ex.: criação, busca, exclusão de produtos).
+* **ERROR** → utilizado para capturar e descrever erros ocorridos durante as requisições.
 
+Exemplo de log no método de criação:
+
+```java
+logger.info("POST /api/produtos - Criando novo produto: {}", produtoDTO.getNome());
+logger.error("POST /api/produtos - Erro ao criar produto: {}", e.getMessage(), e);
 ```
+
+Isso facilita a **auditoria** das requisições e o **debug** em caso de falhas, armazenando mensagens em console ou arquivo de log configurado no `application.properties`.
+
+Além disso, a aplicação conta com **testes unitários (JUnit + Mockito)** que validam tanto os fluxos de sucesso quanto de erro dos serviços.
+Esses testes garantem que as regras de negócio funcionam corretamente e que exceções, como *produto não encontrado*, são tratadas de forma adequada.
+
+✅ **Benefícios**:
+
+* Rastreabilidade de operações da API.
+* Facilidade na detecção de erros em produção.
+* Confiança no código por meio de testes automatizados.
+
+
+## 🧪 Testes Unitários (`ProdutoServiceImplTest`)
+
+O projeto conta com **testes unitários** implementados em **JUnit 5** com **Mockito**, garantindo que as regras de negócio da camada de serviço funcionem corretamente.
+
+Os testes verificam tanto os **fluxos de sucesso** quanto os **cenários de erro**, assegurando a confiabilidade do sistema.
+
+### 🔹 Cenários Cobertos
+
+* **Listagem de produtos** → valida se retorna todos os itens cadastrados.
+* **Busca por ID e categoria** → garante o retorno correto e lança exceção quando o produto não existe.
+* **Busca por nome e termo** → verifica consultas parciais e case-insensitive.
+* **Criação de produto** → assegura que os dados são persistidos corretamente no repositório.
+* **Atualização** → confirma a modificação dos atributos e lança exceção se o produto não for encontrado.
+* **Exclusão** → valida se o produto é removido quando existe e se uma exceção é lançada caso não exista.
+* **Métricas de estoque** → testa os métodos de contagem de produtos, soma total do estoque e cálculo do valor total armazenado.
+* **Conversão para DTO** → garante que os objetos são convertidos corretamente para transferência de dados.
+
+### ✅ Benefícios
+
+* Aumenta a **confiabilidade** do sistema.
+* Garante que **erros sejam capturados antecipadamente**.
+* Facilita **manutenções futuras**, evitando regressões.
+* Melhora a **cobertura de testes** em cenários reais de uso.
 
