@@ -181,11 +181,4 @@ mvn spring-boot:run
 * 🧪 Testes automatizados com Spring Boot Test (JUnit/Mockito)
 * 🐳 Possibilidade de conteinerização com **Docker**
 
----
 
-## 👨‍💻 Autor
-
-**Paulo Henrique Fonseca de Assis**
-💻 Desenvolvedor Fullstack em formação | Java • Spring Boot • React • SwiftUI
-
----
