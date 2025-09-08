@@ -105,7 +105,7 @@ Tela onde o usuário pode visualizar todos os produtos cadastrados, com opção 
 ### 📌 Cadastro de Produtos
 
 ![Cadastro de Produtos](https://github.com/user-attachments/assets/eae27385-8440-4e18-bce0-134899d3a677)  
-Tela para cadastrar novos produtos no sistema, com campos obrigatórios como **nome, preço, categoria, estoque e data de entrada**.
+Tela para cadastrar novos produtos no sistema, com campos obrigatórios como **nome, preço, categoria, estoque e data de entrada**, e optativos o campo descrição e anexar imagem que estão um pouco abaixo(não coube no print).
 
 ---
 
