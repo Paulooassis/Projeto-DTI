@@ -119,7 +119,7 @@ public class ProdutoServiceImpl implements ProdutoService {
                 .sum();
     }
 
-    private ProdutoDTO converterParaDTO(Produto produto) {
+    public ProdutoDTO converterParaDTO(Produto produto) {
         return new ProdutoDTO(
                 produto.getId(),
                 produto.getNome(),
