@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// TODO: CODE REVIEW - Falta de validação de segurança
+// Sugestão: Implementar validação de tamanho máximo para parâmetros e rate limiting
+// Benefício: Melhora segurança da aplicação, previne ataques e garante estabilidade
 @RestController
 @RequestMapping("/api/produtos")
 @CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
@@ -26,6 +29,9 @@ public class ProdutoController {
         this.produtoService = produtoService;
     }
 
+    // TODO: CODE REVIEW - Aplicação do princípio DRY (Don't Repeat Yourself)
+    // Sugestão: Extrair tratamento de exceções para método privado handleServiceCall()
+    // Benefício: Reduz duplicação de código, facilita manutenção e garante consistência
     @GetMapping
     public ResponseEntity<List<ProdutoDTO>> listarTodos() {
         logger.info("GET /api/produtos - Listando todos os produtos");
@@ -65,6 +71,9 @@ public class ProdutoController {
         }
     }
 
+    // TODO: CODE REVIEW - Falta de validação de entrada
+    // Sugestão: Adicionar validação para verificar se nome não é vazio ou nulo
+    // Benefício: Melhora robustez da aplicação e evita queries desnecessárias
     @GetMapping("/buscar")
     public ResponseEntity<List<ProdutoDTO>> buscarPorNome(@RequestParam String nome) {
         logger.info("GET /api/produtos/buscar?nome={} - Buscando produtos por nome", nome);
@@ -131,6 +140,9 @@ public class ProdutoController {
         }
     }
 
+    // TODO: CODE REVIEW - Violação do Single Responsibility Principle
+    // Sugestão: Mover métodos de dashboard para DashboardController separado
+    // Benefício: Cada classe terá uma única responsabilidade, facilitando manutenção e testes
     @GetMapping("/dashboard/total-produtos")
     public ResponseEntity<Long> contarTotalProdutos() {
         logger.info("GET /api/produtos/dashboard/total-produtos - Contando total de produtos");

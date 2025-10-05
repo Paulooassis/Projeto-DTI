@@ -26,6 +26,9 @@ public class Produto {
     @NotNull(message = "Preço é obrigatório")
     @DecimalMin(value = "0.0", inclusive = false, message = "Preço deve ser maior que zero")
     @Column(nullable = false) // REMOVA precision e scale
+    // TODO: CODE REVIEW - Substituir Double por BigDecimal para valores monetários
+    // Sugestão: Usar BigDecimal para evitar problemas de precisão em cálculos financeiros
+    // Benefício: Garante precisão em cálculos monetários e evita erros de arredondamento
     private Double preco;
 
     @Enumerated(EnumType.STRING)
@@ -49,6 +52,9 @@ public class Produto {
     @Column(name = "imagem_url")
     private String imagemUrl;
 
+    // TODO: CODE REVIEW - Implementar padrão Builder para melhorar legibilidade
+    // Sugestão: Criar classe ProdutoBuilder para facilitar criação de objetos com muitos parâmetros
+    // Benefício: Reduz complexidade na criação de objetos, evita erros de ordem de parâmetros
     public Produto(Long id, String nome, Double preco, Categoria categoria, Integer estoque, LocalDate dataEntrada, String descricao, String imagemUrl) {
         this.id = id;
         this.nome = nome;
