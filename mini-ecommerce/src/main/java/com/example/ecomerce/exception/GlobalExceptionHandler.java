@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO: CODE REVIEW - Falta de documentação de API
+// Sugestão: Adicionar anotações @ApiOperation e @ApiParam do Swagger para documentar endpoints
+// Benefício: Melhora documentação automática, facilita integração e reduz dúvidas sobre uso da API
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

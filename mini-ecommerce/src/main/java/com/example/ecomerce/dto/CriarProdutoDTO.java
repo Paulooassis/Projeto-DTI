@@ -7,6 +7,9 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+// TODO: CODE REVIEW - Código duplicado nos DTOs
+// Sugestão: Criar classe base BaseProdutoDTO com campos e validações comuns
+// Benefício: Elimina duplicação, facilita manutenção e garante consistência nas validações
 @Getter
 @Setter
 @NoArgsConstructor
@@ -74,6 +77,9 @@ public class CriarProdutoDTO {
 
     @NotNull(message = "Preço é obrigatório")
     @DecimalMin(value = "0.0", inclusive = false, message = "Preço deve ser maior que zero")
+    // TODO: CODE REVIEW - Substituir Double por BigDecimal para valores monetários
+    // Sugestão: Usar BigDecimal para evitar problemas de precisão em cálculos financeiros
+    // Benefício: Garante precisão em cálculos monetários e evita erros de arredondamento
     private Double preco;
 
     @NotNull(message = "Categoria é obrigatória")

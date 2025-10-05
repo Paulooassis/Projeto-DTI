@@ -8,12 +8,18 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+// TODO: CODE REVIEW - Código duplicado nos DTOs
+// Sugestão: Criar classe base BaseProdutoDTO com campos e validações comuns
+// Benefício: Elimina duplicação, facilita manutenção e garante consistência nas validações
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProdutoDTO {
     private Long id;
     private String nome;
+    // TODO: CODE REVIEW - Substituir Double por BigDecimal para valores monetários
+    // Sugestão: Usar BigDecimal para evitar problemas de precisão em cálculos financeiros
+    // Benefício: Garante precisão em cálculos monetários e evita erros de arredondamento
     private Double preco;
     private Categoria categoria;
     private Integer estoque;

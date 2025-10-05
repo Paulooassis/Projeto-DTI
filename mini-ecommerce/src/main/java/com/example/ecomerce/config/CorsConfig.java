@@ -13,6 +13,9 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
+                // TODO: CODE REVIEW - Configuração de CORS hardcoded
+                // Sugestão: Mover URLs permitidas para application.properties
+                // Benefício: Facilita configuração por ambiente, melhora flexibilidade
                 registry.addMapping("/**")
                         .allowedOrigins("http://127.0.0.1:5500", "http://localhost:5500")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")

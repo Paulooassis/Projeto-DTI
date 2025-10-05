@@ -80,6 +80,9 @@ public class ProdutoServiceImpl implements ProdutoService {
         Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new ProdutoNaoEncontradoException(id));
 
+        // TODO: CODE REVIEW - Extração de método para reduzir complexidade
+        // Sugestão: Extrair lógica de atualização para método atualizarCamposProduto()
+        // Benefício: Melhora legibilidade, facilita testes e reduz complexidade ciclomática
         produto.setNome(produtoDTO.getNome());
         produto.setPreco(produtoDTO.getPreco());
         produto.setCategoria(produtoDTO.getCategoria());
@@ -106,6 +109,9 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
+    // TODO: CODE REVIEW - Problema de performance
+    // Sugestão: Implementar query nativa para calcular soma diretamente no banco
+    // Benefício: Evita carregar todos os produtos na memória, melhora performance
     public Integer contarTotalEstoque() {
         return produtoRepository.findAll().stream()
                 .mapToInt(Produto::getEstoque)
@@ -113,12 +119,18 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
+    // TODO: CODE REVIEW - Problema de performance
+    // Sugestão: Implementar query nativa para calcular valor total diretamente no banco
+    // Benefício: Evita carregar todos os produtos na memória, melhora performance
     public Double calcularValorTotalEstoque() {
         return produtoRepository.findAll().stream()
                 .mapToDouble(p -> p.getPreco() * p.getEstoque())
                 .sum();
     }
 
+    // TODO: CODE REVIEW - Implementar padrão Factory para DTOs
+    // Sugestão: Extrair método converterParaDTO para classe ProdutoDTOFactory
+    // Benefício: Separa responsabilidade de conversão, facilita testes unitários e permite reutilização
     public ProdutoDTO converterParaDTO(Produto produto) {
         return new ProdutoDTO(
                 produto.getId(),

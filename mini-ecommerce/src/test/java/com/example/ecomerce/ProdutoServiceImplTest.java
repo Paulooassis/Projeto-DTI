@@ -25,6 +25,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+// TODO: CODE REVIEW - Cobertura de testes insuficiente
+// Sugestão: Adicionar testes para ProdutoController, GlobalExceptionHandler e cenários de erro não cobertos
+// Benefício: Aumenta confiabilidade, facilita refatoração e garante qualidade do código
 @ExtendWith(MockitoExtension.class)
 class ProdutoServiceImplTest {
 
@@ -329,4 +332,8 @@ class ProdutoServiceImplTest {
         assertEquals("Notebook Dell Inspiron 15", resultado.getDescricao());
         assertEquals("http://imagem.com/notebook.jpg", resultado.getImagemUrl());
     }
+
+    // TODO: CODE REVIEW - Falta de testes de integração
+    // Sugestão: Implementar testes de integração usando @SpringBootTest
+    // Benefício: Garante que todas as camadas funcionem corretamente integradas e detecta problemas de configuração
 }

@@ -1,3 +1,6 @@
+// TODO: CODE REVIEW - Implementação de Interface Segregation
+// Sugestão: Dividir em interfaces menores como ProdutoQueryService e ProdutoCommandService
+// Benefício: Classes dependem apenas dos métodos que realmente utilizam, seguindo o princípio ISP
 // ProdutoService.java
 package com.example.ecomerce.service;
 
